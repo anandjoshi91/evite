@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Home
+{% endblock %}
+
+{% block body %}
+
+<div class="jumbotron">
+    <h1 class="display-4">Evite</h1>
+    <p class="lead">Planning and attending events has never been this easy</p>
+    <hr class="my-4">
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="{{ url_for('eventsView') }}" role="button">All events</a>
+      <a class="btn btn-success btn-lg" href="{{ url_for('registerView') }}" role="button">Create an event</a>
+    </p>
+  </div>
+
+{% endblock %}

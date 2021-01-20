@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% block title %} Register an event {% endblock %} {%
+    include 'header.html'%} {% block body %}
+
+    
+    {% if event %}
+    <div class="container">
+        <br>
+        <div class="card">
+            <div class="card-header">
+                Event Details
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{event.name}} @ {{event.location}}</h5>
+                <p class="card-text">
+                  Starts at - {{event.start_time.strftime('%a %B %y @ %H:%M')}}
+                </p>
+                <p class="card-text">
+                  Ends at - {{event.end_time.strftime('%a %B %y @ %H:%M')}}
+                </p>
+            </div>
+          </div>
+          <br>
+
+        <form method="POST" action="/addUserToEvent">
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" maxlength="80" class="form-control" name="email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input maxlength="80" type="name" class="form-control" name="name" placeholder="Enter name" required>
+            </div>
+            <input type="hidden" name="event" value="{{event.name}}">
+            <input type="hidden" name="eventId" value="{{event.id}}">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+    {% endif %}
+   
+    {% endblock %}
+    

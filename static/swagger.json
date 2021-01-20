@@ -1,0 +1,382 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Evite - event management platform",
+    "version": "1.0.0",
+    "title": "Evite",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "0.0.0.0:8080/",
+  "basePath": "api/v1",
+  "tags": [
+    {
+      "name": "events",
+      "description": "Everything about events"
+    }
+  ],
+  "schemes": ["http"],
+  "paths": {
+    "/events": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get all events",
+        "operationId": "getAllEvents",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "apiKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/eventResponse"
+            }
+          },
+          "500": {
+            "description": "Error occurred in fetching all events",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["events"],
+        "summary": "Create a new event",
+        "description": "Create a new event",
+        "operationId": "addEvent",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "apiKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "New event parameter",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/newEventRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Event Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result" : {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred in creating a new event",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get event by Id",
+        "operationId": "getEventById",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "apiKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "The event that needs to be fetched",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/singleEventResponse"
+            }
+          },
+          "500": {
+            "description": "Error occurred in fetching an event",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/events/{eventId}/signup": {
+      "post": {
+        "tags": ["events"],
+        "summary": "Sign up user for an event",
+        "description": "Sign up user for an event",
+        "operationId": "addUserToEvent",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "apiKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "The event that needs to be fetched",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request for adding a new user to an event",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/addUserToEventReq"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User added to event",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result" : {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred in signing up user",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["events"],
+        "summary": "Remove user from an event",
+        "description": "Remove user from an event",
+        "operationId": "removeUserFromEvent",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "apiKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Request for removing a user from an event",
+            "required": true,
+            "type": "number"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Request for removing a user from an event",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User removed from event",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result" : {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error in removing user from event",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/events/{eventId}/users": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get users in events",
+        "operationId": "getUsersInEvent",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "apiKey",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "Get users in events",
+            "required": true,
+            "type": "number"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items":{
+                "type": "string"
+              }
+            }
+          },
+          "500": {
+            "description": "Error occurred in fetching users in a new event",
+            "schema": {
+              "$ref": "#/definitions/errorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "eventResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "start_time": {
+            "type": "string"
+          },
+          "end_time": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "singleEventResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "start_time": {
+          "type": "string"
+        },
+        "end_time": {
+          "type": "string"
+        }
+      }
+    },
+    "newEventRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "value": "Format - dd/mm/yyyy HH:MM"
+        },
+        "endDate": {
+          "type": "string",
+          "value": "Format - dd/mm/yyyy HH:MM"
+        }
+      }
+    },
+    "addUserToEventReq": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "errorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

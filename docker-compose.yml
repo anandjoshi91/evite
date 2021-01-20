@@ -1,0 +1,7 @@
+version: '3'
+services:
+  evite:
+    image: evite:latest
+    command: python app.py
+    ports:
+      - "8080:8080"

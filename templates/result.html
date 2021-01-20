@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %} Register an event {% endblock %} {%
+    include 'header.html'%} {% block body %}
+
+
+    {% if person and event %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+              <b>{{person}}</b> has been successfully registered for the event <b>{{event}}</b>.
+            </div>
+          </div>
+    </div>
+    {% else %}
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+              An error occurred while registering the user. Please try again.
+            </div>
+          </div>
+    </div>
+    {% endif %}
+
+    {% endblock %}

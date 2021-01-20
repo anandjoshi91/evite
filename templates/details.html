@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block title %} Register an event {% endblock %} {%
+    include 'header.html'%} {% block body %}
+    
+    <div class="container">
+      <div class="row">
+        {% if event %}
+        <div class="card text-center" style="margin: 10px">
+          <h5 class="card-header">{{event.name}}</h5>
+          <div class="card-body">
+            <h5 class="card-title">Location - {{event.location}}</h5>
+            <p class="card-text">
+              Starts at - {{event.start_time.strftime('%a %B %y @ %H:%M')}}
+            </p>
+            <p class="card-text">
+              Ends at - {{event.end_time.strftime('%a %B %y @ %H:%M')}}
+            </p>
+          </div>
+        </div>
+
+
+        <div class="card text-center" style="margin: 10px">
+            <div class="card-header">
+              Users attending
+            </div>
+            <ul class="list-group list-group-flush">
+              {% for u in event.users %}
+                <li class="list-group-item">{{u}}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+        {% endif %}
+      </div>
+    </div>
+    
+    {% endblock %}
+    
