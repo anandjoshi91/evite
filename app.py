@@ -38,16 +38,25 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 
 @app.route("/")
 def index():
+    """
+    Return home page
+    """
     return render_template('index.html')
 
 
 @app.route("/events", methods=["GET"])
 def eventsView():
+    """
+    List of all events
+    """
     e = event_service.getAllEvents()
     return render_template('events.html', events = e)
 
 @app.route("/createEvent", methods=["POST"])
 def createEventView():
+    """
+    Form for creating a new event
+    """
     try:
         if request.form:
             event_service.createAnEvent(request.form)
@@ -58,15 +67,24 @@ def createEventView():
 
 @app.route("/register")
 def registerView(error=''):
+    """
+    Form for registering a new event
+    """
     return render_template('register.html', error=error)
 
 @app.route("/rsvp/<eventId>")
 def rsvpView(eventId='', error=''):
+    """
+    Form for user to rsvp/attend an event
+    """
     event = event_service.getEventById(eventId)
     return render_template('rsvp.html', event=event, error=error)
 
 @app.route("/addUserToEvent", methods=["POST"])
 def addUserToEventView():
+    """
+    Results page for notifying user about the event subscription
+    """
     try:
         if request.form['email'] and request.form['event']:
             user_service.addUserToEvent(request.form['name'], request.form['email'], request.form['eventId'])
@@ -77,6 +95,9 @@ def addUserToEventView():
 
 @app.route("/eventDetails/<eventId>")
 def eventDetailsView(eventId='', error=''):
+    """
+    Detail view page for an event
+    """
     event = event_service.getEventDetails(eventId)
     return render_template('details.html', event=event, error=error)
 
@@ -86,6 +107,9 @@ def eventDetailsView(eventId='', error=''):
 
 
 def getCommonErrorRes(err):
+    """
+    Wrap error in json format
+    """
     return app.response_class(
         response=json.dumps({"error": str(err)}),
         status=500,
@@ -94,6 +118,9 @@ def getCommonErrorRes(err):
 
 @app.route("/api/v1/events", methods=["GET"])
 def getAllEvents():
+    """
+    API to fetch all events
+    """
     try:
         auth_service.validateApiKey(request.headers.get('apiKey'))
         events = event_service.getAllEvents()
@@ -110,6 +137,9 @@ def getAllEvents():
 
 @app.route("/api/v1/events/<eventId>", methods=["GET"])
 def getEventById(eventId):
+    """
+    API to fetch a given event
+    """
     try:
         auth_service.validateApiKey(request.headers.get('apiKey'))
         event = event_service.getEventById(eventId)
@@ -125,6 +155,9 @@ def getEventById(eventId):
 
 @app.route("/api/v1/events", methods=["POST"])
 def postEvent():
+    """
+    API to create a new event
+    """
     try:
         auth_service.validateApiKey(request.headers.get('apiKey'))
         event = {'name': request.json['name'],
@@ -144,6 +177,9 @@ def postEvent():
 
 @app.route("/api/v1/events/<eventId>/signup", methods=["POST"])
 def signUpForEvent(eventId):
+    """
+    API for signing up a user to an event
+    """
     try:
         auth_service.validateApiKey(request.headers.get('apiKey'))
         user_service.addUserToEvent(request.json['name'], request.json['email'], eventId)
@@ -159,6 +195,9 @@ def signUpForEvent(eventId):
 
 @app.route("/api/v1/events/<eventId>/signup", methods=["DELETE"])
 def cancelSignUpForEvent(eventId):
+    """
+    API for removing user from an event
+    """
     try:
         auth_service.validateApiKey(request.headers.get('apiKey'))
         user_service.removeUserInEvent(request.json['email'], eventId)
@@ -174,6 +213,9 @@ def cancelSignUpForEvent(eventId):
 
 @app.route("/api/v1/events/<eventId>/users", methods=["GET"])
 def getUsersInEvent(eventId):
+    """
+    API for fetching all users attending a given event
+    """
     try:
         auth_service.validateApiKey(request.headers.get('apiKey'))
         users = user_service.getUsersInEvent(eventId)
