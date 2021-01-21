@@ -15,10 +15,13 @@ docker-compose up
 
 After starting the application follow - http://0.0.0.0:8080/api/docs to start swagger ui.
 
-## Testing application
+![Swagger UI](./docs/api-docs.png)
 
-```shell
-cd evite
-pip install -r requirements.txt
-pytest
-```
+## UI
+
+Default UI - http://0.0.0.0:8080/
+
+![All events](./docs/all-events.png)
+## Config
+
+Override default config in `config.py`
