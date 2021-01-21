@@ -1,5 +1,6 @@
 from model.model import Event, User, Rsvp
 from model.model import db
+import service.email as mail
 
 def addUserToEvent(name, email, event_id):
     user = getUserByEmail(email)
@@ -14,6 +15,7 @@ def addUserToEvent(name, email, event_id):
         newRsvp = Rsvp(event_id=event_id, user_email=email)
         db.session.add(newRsvp)
         db.session.commit()
+        mail.notifyAdmin(event_id, email)
 
 
 def removeUserInEvent(email, eventId):
