@@ -1,10 +1,11 @@
 from model.model import Event
 from model.model import db
+from sqlalchemy import desc
 from datetime import datetime
 import service.users as user_service
 
 def getAllEvents():
-    events = Event.query.all()
+    events = Event.query.order_by(Event.start_time).all()
     return events
 
 
